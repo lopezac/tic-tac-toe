@@ -6,7 +6,7 @@ const Player = (marker) => {
 
 const gameboard = (() => {
     const cells = document.querySelectorAll(".cell");
-    const board = [["", "", ""], ["", "", ""], ["", "", ""]];
+    let board = [["", "", ""], ["", "", ""], ["", "", ""]];
     
     const updateBoard = () => {
         let i = 0;
@@ -18,39 +18,48 @@ const gameboard = (() => {
         }
     };
 
-    return {cells, board, updateBoard};
+    const emptyCells = () => {
+        for (let idx = 0; idx < cells.length; idx++) {
+            cells[idx].textContent = "";
+        }
+    };
+    
+    const emptyBoard = () => {
+        return [["", "", ""], ["", "", ""], ["", "", ""]];
+    }
+    
+    return {cells, board, updateBoard, emptyBoard, emptyCells};
 })();
 
 const player1 = Player("x");
 const player2 = Player("o");
-const resetBtn = document.querySelector(".reset-btn");
-const gameResult = document.querySelector(".game-result");
-
-for (let i = 0; i < gameboard.cells.length; i++) {
-    let cell = gameboard.cells[i];
-    cell.addEventListener("click", (e) => {
-        gameController.startGame(e.target, i);
-    });
-}
 
 const gameController = ((player1, player2, gameboard) => {
     let gameOver = false;
     let gameWinner = false;
     let currentPlayer = player1;
+    
+    const startGame = () => {
+        for (let i = 0; i < gameboard.cells.length; i++) {
+            let cell = gameboard.cells[i];
+            cell.addEventListener("click", (e) => {
+                gameController.playRound(e.target, i);
+            });
+        }
+    }
 
-    const startGame = (cell, idx) => {
+    const playRound = (cell, idx) => {
         if (cell.textContent !== "" || gameOver) return false;
         writeMove(currentPlayer.marker, idx);
-
+        
         if (checkPlayerWon(currentPlayer.marker)) {
             gameWinner = currentPlayer;
             gameOver = true;
         } else if (!checkAvailableMove()) {
             gameOver = true;
         }
-
-        if (gameOver) endGame();
-
+        
+        if (gameOver) endGame();  
         currentPlayer = choosePlayerTurn();
     };
 
@@ -65,19 +74,23 @@ const gameController = ((player1, player2, gameboard) => {
         }
     };
 
-    const showElement = (element) => {
-        element.classList.remove("hidden");
-    }
+    const resetGame = () => {
+        hideElement(resetBtn);
+        hideElement(gameResult);
+        gameboard.emptyCells();
+        gameOver = false;
+        gameWinner = false;
+    };
 
-    const hideElement = (element) => {
-        element.classList.add("hidden");
-    }
-
+    const showElement = (element) => element.classList.remove("hidden");
+    
+    const hideElement = (element) => element.classList.add("hidden");
+    
     const writeMove = (marker, i) => {
         gameboard.cells[i].textContent = marker;
         gameboard.updateBoard();
     };
-
+    
     const choosePlayerTurn = () => {
         return (currentPlayer.marker === player1.marker) ? player2 : player1; 
     };
@@ -113,7 +126,7 @@ const gameController = ((player1, player2, gameboard) => {
         }
         return false;
     };
-
+    
     const diagonalWin = (marker) => {
         const diagonals = [];
         diagonals.push([gameboard.board[0][0], gameboard.board[1][1],
@@ -127,5 +140,11 @@ const gameController = ((player1, player2, gameboard) => {
         return false;
     }
 
-    return {startGame};
+    return {startGame, playRound, resetGame};
 })(player1, player2, gameboard);
+
+const resetBtn = document.querySelector(".reset-btn");
+const gameResult = document.querySelector(".game-result");
+
+gameController.startGame();
+resetBtn.addEventListener("click", () => gameController.resetGame());
