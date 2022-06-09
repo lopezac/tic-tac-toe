@@ -43,6 +43,7 @@ const gameController = ((player1, player2, gameboard) => {
         for (let i = 0; i < gameboard.cells.length; i++) {
             let cell = gameboard.cells[i];
             cell.addEventListener("click", (e) => {
+                updatePlayerTurn();
                 gameController.playRound(e.target, i);
             });
         }
@@ -140,11 +141,17 @@ const gameController = ((player1, player2, gameboard) => {
         return false;
     }
 
+    const updatePlayerTurn = () => {
+        marker = (currentPlayer.marker === player1.marker) ? player2.marker : player1.marker;
+        playerTurn.textContent = `Player turn: ${marker}`;
+    }
+
     return {startGame, playRound, resetGame};
 })(player1, player2, gameboard);
 
 const resetBtn = document.querySelector(".reset-btn");
 const gameResult = document.querySelector(".game-result");
+const playerTurn = document.querySelector(".player-turn");
 
 gameController.startGame();
 resetBtn.addEventListener("click", () => gameController.resetGame());
