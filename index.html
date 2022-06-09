@@ -8,10 +8,12 @@
     <script src="script.js" defer></script>
 </head>
 <body>
-    <h1>Tic Tac Toe</h1>
-    <p class="player-turn">Player turn: x</p>
-    <p class="game-result hidden">Game result (winner or draw)</p>
-    <div class="board">
+    <header>
+        <h1 class="title">Tic Tac Toe</h1>
+        <p class="player-turn">Player turn: x</p>
+        <p class="game-result hidden">Game result (winner or draw)</p>
+    </header>
+    <main class="board">
         <div class="row">
             <div class="cell"></div>
             <div class="cell"></div>
@@ -27,7 +29,13 @@
             <div class="cell"></div>
             <div class="cell"></div>
         </div>
+    </main>
+    <div>
+        <button type="button" class="reset-btn">Reset</button>
     </div>
-    <button type="button" class="reset-btn">Reset game</button>
+    <footer>
+        Axel C. Lopez @lopezac Copyright © 2022 
+        <span class="github-icon">Github</span>
+    </footer>
 </body>
 </html>

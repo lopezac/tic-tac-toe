@@ -69,9 +69,9 @@ const gameController = ((player1, player2, gameboard) => {
         showElement(gameResult);
 
         if (gameWinner) {
-            gameResult.textContent = `Player ${currentPlayer.marker} won!`;
+            gameResult.textContent = `${currentPlayer.marker} wins`;
         } else {
-            gameResult.textContent = `Game was a tie!`;
+            gameResult.textContent = `Tie`;
         }
     };
 
@@ -80,6 +80,7 @@ const gameController = ((player1, player2, gameboard) => {
         gameboard.emptyCells();
         gameOver = false;
         gameWinner = false;
+        currentPlayer = player1;
     };
 
     const showElement = (element) => element.classList.remove("hidden");
@@ -87,6 +88,11 @@ const gameController = ((player1, player2, gameboard) => {
     const hideElement = (element) => element.classList.add("hidden");
     
     const writeMove = (marker, i) => {
+        let playerClass = (marker === "x") ? "player-one" : "player-two"; 
+        let secondClass = gameboard.cells[i].classList[1];
+        gameboard.cells[i].classList.remove(secondClass);
+        gameboard.cells[i].classList.add(playerClass);
+        
         gameboard.cells[i].textContent = marker;
         gameboard.updateBoard();
     };
