@@ -76,7 +76,6 @@ const gameController = ((player1, player2, gameboard) => {
     };
 
     const resetGame = () => {
-        hideElement(resetBtn);
         hideElement(gameResult);
         gameboard.emptyCells();
         gameOver = false;
