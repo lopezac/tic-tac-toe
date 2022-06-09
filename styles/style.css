@@ -11,6 +11,10 @@ body {
     box-sizing: border-box;
 }
 
+.hidden {
+    display: none;
+}
+
 .board {
     display: grid;
     grid-template-rows: repeat(3, 1fr);
