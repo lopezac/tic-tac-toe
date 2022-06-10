@@ -59,7 +59,12 @@ header {
 .player input {
     background: none;
     border: none;
+    border-bottom: 1px solid var(--yellow);
     color: var(--yellow);
+}
+
+.player input:focus {
+    border: none;
 }
 
 .player span {
@@ -130,4 +135,10 @@ header {
     font-size: 2rem;
     border-radius: 5px;
     padding: 5px 10px;
+}
+
+footer {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
 }
