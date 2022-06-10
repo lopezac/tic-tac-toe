@@ -43,7 +43,6 @@ const gameController = ((player1, player2, gameboard) => {
         for (let i = 0; i < gameboard.cells.length; i++) {
             let cell = gameboard.cells[i];
             cell.addEventListener("click", (e) => {
-                updatePlayerTurn();
                 gameController.playRound(e.target, i);
             });
         }
@@ -69,7 +68,10 @@ const gameController = ((player1, player2, gameboard) => {
         showElement(gameResult);
 
         if (gameWinner) {
-            gameResult.textContent = `${currentPlayer.marker} wins`;
+            let winner = (gameWinner.marker === "x") ? "#playerOneName" : 
+            "#playerTwoName";
+            let winnerName = document.querySelector(winner).value;
+            gameResult.textContent = `${winnerName} wins`;
         } else {
             gameResult.textContent = `Tie`;
         }
@@ -118,8 +120,8 @@ const gameController = ((player1, player2, gameboard) => {
     const rowWin = (marker) => {
         for (row of gameboard.board) {
             if (row.every((cell) => cell === marker)) return true;
-            else return false;
         }
+        return false;
     };
 
     const colWin = (marker) => {
@@ -146,17 +148,21 @@ const gameController = ((player1, player2, gameboard) => {
         return false;
     }
 
-    const updatePlayerTurn = () => {
-        marker = (currentPlayer.marker === player1.marker) ? player2.marker : player1.marker;
-        playerTurn.textContent = `Player turn: ${marker}`;
-    }
-
     return {startGame, playRound, resetGame};
 })(player1, player2, gameboard);
 
 const resetBtn = document.querySelector(".reset-btn");
 const gameResult = document.querySelector(".game-result");
-const playerTurn = document.querySelector(".player-turn");
+const playersName = document.querySelectorAll(".playerName");
+
+const resizeInput = (input) => {
+    input.style.width = input.value.length + 1 + "ch";
+}
+
+for (player of playersName) {
+    resizeInput(player);
+    player.addEventListener("input", (e) => resizeInput(e.target));
+}
 
 gameController.startGame();
 resetBtn.addEventListener("click", () => gameController.resetGame());

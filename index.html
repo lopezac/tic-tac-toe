@@ -10,8 +10,22 @@
 <body>
     <header>
         <h1 class="title">Tic Tac Toe</h1>
-        <p class="player-turn">Player turn: x</p>
-        <p class="game-result hidden">Game result (winner or draw)</p>
+        <div class="players">
+            <div class="player">
+                <input type="text" id="playerOneName" value="Player 1" 
+                maxlength="20" minlength="2" class="playerName">
+                <span class="player-one">x</span>
+            </div>
+            <div class="player">
+                <input type="text" id="playerTwoName" value="Player 2" 
+                maxlength="20" minlength="2" class="playerName">
+                <span class="player-two">o</span>
+            </div>
+            <span class="change-color">Bu</span>
+        </div>
+        <div class="info">
+            <p class="game-result hidden">Game result (winner or draw)</p>
+        </div>
     </header>
     <main class="board">
         <div class="row">
